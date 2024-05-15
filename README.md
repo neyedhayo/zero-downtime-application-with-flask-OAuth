@@ -35,6 +35,8 @@ This guide covers the steps to set up a Flask application with Twitter (now X) O
   
 - Twitter Developer Account for OAuth credentials.
 
+## How-to-guide
+
 ## 1. Setup Flask Application with Twitter OAuth
 
 1. Make sure you have the `app.py` file is created in the parent directory
