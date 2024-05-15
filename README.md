@@ -1,30 +1,39 @@
-# Guide-to-Setup: Twitter OAuth in Flask Application with Zero-Downtime Upgrade deployment implementation
+# Guide-to-Setup: X OAuth in Flask Application with Zero-Downtime Upgrade deployment implementation
 
 ## Introduction
 
-This guide covers the steps to set up a Flask application with Twitter OAuth, deploy it to a Kubernetes cluster with a zero-downtime upgrade strategy, implement and verify a new version of the application to ensure zero downtime.
+This guide covers the steps to set up a Flask application with Twitter (now X) OAuth, deploy it to a Kubernetes cluster with a zero-downtime upgrade strategy, implement and verify a new version of the application to ensure zero downtime.
 
 ## Resources (Docs)
 
 - [K8s Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-- 
+- [Performing a Rolling Update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)
+- [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+- [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+- [Zero-Downtime](https://medium.com/@tech_18484/achieving-zero-downtime-deployments-in-kubernetes-best-practices-and-use-cases-5c29da6d95bf)
+- [Zero-Downtime Application with Kubernetes](https://www.qovery.com/blog/how-to-achieve-zero-downtime-application-with-kubernetes/)
+- [Deployment Full Guide](https://overcast.blog/zero-downtime-deployments-with-kubernetes-a-full-guide-71019397b924)
 
 ## Tools
 
-* Flask
-* Twitter(X) OAuth
-* Kubernetes
-* Docker
-* Git
-* Gardener (AWS platform)
+- Flask
+- [Twitter(X) OAuth](https://developer.twitter.com/en)
+- Kubernetes
+- Docker
+- Git
+- [Gardener-AWS platform](https://github.com/gardener/gardener)
 
 ## Prerequisites
 
-* Python should already be installed in your machine
-* Docker installed on your local machine.
-* Access to a Docker registry (e.g., Docker Hub).
-* Kubernetes cluster (Gardener or any other provider) and kubectl installed.
-* Twitter Developer Account for OAuth credentials.
+- Python should already be installed in your machine
+  
+- Docker installed on your local machine.
+  
+- Access to a Docker registry (e.g., Docker Hub) or CE edition configured locally/via a VM
+  
+- Kubernetes cluster (Gardener or any other provider) and kubectl installed.
+  
+- Twitter Developer Account for OAuth credentials.
 
 ## 1. Setup Flask Application with Twitter OAuth
 
