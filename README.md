@@ -43,28 +43,28 @@ This guide covers the steps to set up a Flask application with Twitter (now X) O
 2. Ensure you have the `requirement.txt` file and executed in the terminal
 
    ```txt
-    Flask==2.0.1
-    tweepy==4.0.0
-    python-dotenv==0.19.0
+        Flask==2.0.1
+        tweepy==4.0.0
+        python-dotenv==0.19.0
    ```
 
 3. The `Dockerfile` should also be in the same directory as well
 4. Most importantly create `.env` file where your client credentials will be saved in.
 
    ```env
-    TWITTER_CONSUMER_KEY=...
-    TWITTER_CONSUMER_SECRET=...
-    TWITTER_ACCESS_TOKEN=...
-    TWITTER_ACCESS_TOKEN_SECRET=...
+        TWITTER_CONSUMER_KEY=...
+        TWITTER_CONSUMER_SECRET=...
+        TWITTER_ACCESS_TOKEN=...
+        TWITTER_ACCESS_TOKEN_SECRET=...
    ```
 
 **WARNING:** The `env` should be kept private and not open to public, one way to ensure that is by ignoring it in a `.gitignore` file as used in this workflow or manually setting the OAuth tokens as a enviroment variable via terminal **(NOT used!)**
 
 5. You can run the application manually if you want, simply by;
 
-   ```python
-   python3 app.py
-   ```
+    ```python
+        python3 app.py
+    ```
 
 <br>
 
@@ -74,39 +74,39 @@ This guide covers the steps to set up a Flask application with Twitter (now X) O
 
 1. Build and the push Docker image
 
-   ```bash
-   docker build -t your-name/twitter:v1 .
-   docker push your-name/twitter:v1
-   ```
+    ```bash
+        docker build -t your-name/twitter:v1 .
+        docker push your-name/twitter:v1
+    ```
 
 2. Create the Kubernetes deployment manifest file - `deployment.yaml`; <br>
    Creating the file, the important steps to integrate the **"zero-downtime upgrades"** will be;
 
-    * The "strategy rolling-update" field in the specifications ;
+    - The "strategy rolling-update" field in the specifications ;
 
         ```yaml
-        spec:
-            replicas: 3
-            selector:
-                matchLabels:
-                app: app
-            strategy: # field to enable the rolling update for downtime upgrade
-                type: RollingUpdate 
-                rollingUpdate:
-                    maxUnavailable: 1
-                    maxSurge: 1
+            spec:
+                replicas: 3
+                selector:
+                    matchLabels:
+                    app: app
+                strategy: # field to enable the rolling update for downtime upgrade
+                    type: RollingUpdate 
+                    rollingUpdate:
+                        maxUnavailable: 1
+                        maxSurge: 1
         ```
 
     * The constraints topology for the server zone
 
         ```yaml
-        topologySpreadConstraints:
-        - maxSkew: 1
-            topologyKey: "topology.kubernetes.io/zone"
-            whenUnsatisfiable: DoNotSchedule
-            labelSelector:
-            matchLabels:
-                app: app
+            topologySpreadConstraints:
+            - maxSkew: 1
+                topologyKey: "topology.kubernetes.io/zone"
+                whenUnsatisfiable: DoNotSchedule
+                labelSelector:
+                matchLabels:
+                    app: app
         ```
 
 3. Ensure you have your `service.yaml` file which contains the LoadBalancer specifications in the parent directory
@@ -114,36 +114,36 @@ This guide covers the steps to set up a Flask application with Twitter (now X) O
 4. Create Kubernetes Secrets for Twitter Credentials
 
     ```sh
-    kubectl create secret generic twitter-credentials \
-        --from-literal=consumer_key=inputkey \
-        --from-literal=consumer_secret=inputkey \
-        --from-literal=access_token=inputkey \
-        --from-literal=access_token_secret=inputkey
+        kubectl create secret generic twitter-credentials \
+            --from-literal=consumer_key=inputkey \
+            --from-literal=consumer_secret=inputkey \
+            --from-literal=access_token=inputkey \
+            --from-literal=access_token_secret=inputkey
     ```
 
     **NOTE:** In this step, if your output is returning an already existing client credentials, you'll have to delete it and re-run the above shell script. To delete the old saved credentials if necessary;
 
     ```sh
-    kubectl delete secret twitter-credentials
+        kubectl delete secret twitter-credentials
     ```
 
 5. Deploy to the Kubernetes cluster
 
     ```sh
-    kubectl apply -f deployment.yaml
-    kubectl apply -f service.yaml
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
     ```
 
 6. Monitor the Deployment
 
     ```sh
-    kubectl rollout status deployment/app
+        kubectl rollout status deployment/app
     ```
 
 7. Running the application with the external IP of the loadbalancer
 
     ```sh
-    kubectl get services
+        kubectl get services
     ```
 
     **Get the external IP url of the running application and paste it on your browser**.
